@@ -12,55 +12,194 @@ media_folder: static/img
 public_folder: /img
 
 collections:
-  - name: "blog"
-    label: "Blog"
-    folder: "src/pages/blog"
+  - name: questions
+    label: Question
+    folder: content/article-pages
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "blog-post"}
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Description", name: "description", widget: "text"}
-      - {label: "Featured Post", name: "featuredpost", widget: "boolean"}
-      - {label: "Featured Image", name: "featuredimage", widget: image}
-      - {label: "Body", name: "body", widget: "markdown"}
-      - {label: "Tags", name: "tags", widget: "list"}
-
-  - name: "pages"
-    label: "Pages"
+      - { label: Template, name: template, widget: hidden, default: question }
+      - { label: Date, name: date, widget: date }
+      - { label: Title, name: title, widget: string }
+      - { label: Custom Url, name: slug, widget: string, required: false, hint: "Enter the part of the web address to appear after -removed-" }
+      - { label: "Meta title", name: metatitle, widget: string, required: false }
+      - { label: "Meta description", name: metadescription, widget: string, required: false }
+      - label: Display on home page
+        name: featured
+        widget: select
+        options:
+            - {label: "Feature", value: "featured"}
+            - {label: "Do not feature", value: "not-featured" }
+        default: "featured"
+      - label: Tags
+        name: tags
+        required: false
+        multiple: true
+        widget: relation
+        collection: categories
+        searchFields: [ title ]
+        valueField: title
+      - { label: Introduction, name: introduction, widget: string }
+      - label: Hero Image
+        name: heroImage
+        required: false
+        widget: object
+        fields:
+          - { label: Image, name: source, required: false, widget: image }
+          - { label: Alt Description, name: alt, required: false, widget: string }
+          - { label: Credit, name: credit, required: false, widget: string }
+      - label: Expert Article(s)
+        name: expert
+        required: false
+        widget: relation
+        collection: expert
+        searchFields: [ title ]
+        valueField: title
+        multiple: true
+      - label: Young Persons Response(s)
+        name: young
+        required: false
+        widget: relation
+        collection: young
+        searchFields: [ title ]
+        valueField: title
+        multiple: true
+      - label: Roundup
+        name: roundup
+        required: false
+        widget: relation
+        collection: roundup
+        searchFields: [ title ]
+        valueField: title
+        multiple: false
+  - name: expert
+    label: Expert Content
+    folder: content/expert
+    create: true
+    fields:
+      - label: Author
+        name: author
+        widget: object
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Description, name: description, required: false, widget: string }
+          - { label: Image, name: image, required: false, widget: image }
+          - { label: Organisation, name: organisation, required: false, widget: relation, collection: organisations, searchFields: [ name ], valueField: name}
+      - { label: Title, name: title, widget: string }
+      - label: Content
+        name: introduction
+        widget: markdown
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - { label: Video, name: video, widget: video, required: false, hint: The YouTube or Vimeo URL of your video. }
+      - label: Additional Content
+        name: content1
+        widget: markdown
+        required: false
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - label: Image
+        name: contentImage
+        required: false
+        widget: object
+        fields:
+          - { label: Image, name: source, required: false, widget: image }
+          - { label: Alt Description, name: alt, required: false, widget: string }
+          - { label: Credit, name: credit, required: false, widget: string }
+      - label: Additional Content
+        name: content2
+        widget: markdown
+        required: false
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - label: Quote
+        name: quote
+        widget: string
+        required: false
+  - name: young
+    label: Young Persons Response
+    folder: content/young
+    create: true
+    fields:
+      - label: Author
+        name: author
+        widget: object
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Description, name: description, required: false, widget: string }
+          - { label: Image, name: image, required: false, widget: image }
+          - { label: Organisation, name: organisation, required: false, widget: relation, collection: organisations, searchFields: [ name ], valueField: name}
+      - { label: Title, name: title, widget: string }
+      - label: Content
+        name: introduction
+        widget: markdown
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - { label: Video, name: video, widget: video, required: false, hint: The YouTube or Vimeo URL of your video. }
+      - label: Additional Content
+        name: content1
+        widget: markdown
+        required: false
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - label: Image
+        name: contentImage
+        required: false
+        widget: object
+        fields:
+          - { label: Image, name: source, required: false, widget: image }
+          - { label: Alt Description, name: alt, required: false, widget: string }
+          - { label: Credit, name: credit, required: false, widget: string }
+      - label: Additional Content
+        name: content2
+        widget: markdown
+        required: false
+        buttons: [ bold, italic, heading-one, heading-two, bulleted-list, numbered-list, link ]
+      - label: Quote
+        name: quote
+        widget: string
+        required: false
+  - name: roundup
+    label: Roundup
+    folder: content/roundup
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: markdown }
+  - name: organisations
+    label: Organisations
+    identifier_field: name
+    folder: content/organisations
+    create: true
+    fields:
+      - { label: Name, name: name, widget: string }
+  - name: pages
+    label: Page
+    delete: false # content editors should not be able to delete
     files:
-      - file: "src/pages/index.md"
-        label: "Landing Page"
-        name: "index"
+      - name: get-involved
+        label: Get involved
+        file: content/pages/get-involved.md
         fields:
-          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "index-page"}
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: Heading, name: heading, widget: string}
-          - {label: Subheading, name: subheading, widget: string}
-          - {label: Mainpitch, name: mainpitch, widget: object, fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]}
-          - {label: Description, name: description, widget: string}
-          - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
-          - {label: Main, name: main, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Image1, name: image1, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image2, name: image2, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image3, name: image3, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}]}
-      - file: "src/pages/about/index.md"
-        label: "About"
-        name: "about"
+          - { label: Template, name: template, widget: hidden, default: page }
+          - { label: Title, name: title, widget: string }
+          - { label: Meta title, name: metatitle, widget: string, required: false }
+          - { label: Meta description, name: metadescription, widget: string, required: false }
+          - { label: Introduction, name: introduction, widget: markdown }
+          - { label: Body, name: body, widget: markdown }
+      - name: terms-and-conditions
+        label: Terms and conditions
+        file: content/pages/terms-and-conditions.md
         fields:
-          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "about-page"}
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Body", name: "body", widget: "markdown"}
-      - file: "src/pages/products/index.md"
-        label: "Products Page"
-        name: "products"
-        fields:
-          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "product-page"}
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: Heading, name: heading, widget: string}
-          - {label: Description, name: description, widget: string}
-          - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
-          - {label: Main, name: main, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Image1, name: image1, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image2, name: image2, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image3, name: image3, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}]}
-          - {label: Testimonials, name: testimonials, widget: list, fields: [{label: Quote, name: quote, widget: string}, {label: Author, name: author, widget: string}]}
-          - {label: Full_image, name: full_image, widget: image}
-          - {label: Pricing, name: pricing, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: string}, {label: Plans, name: plans, widget: list, fields: [{label: Plan, name: plan, widget: string}, {label: Price, name: price, widget: string}, {label: Description, name: description, widget: string}, {label: Items, name: items, widget: list}]}]}
+          - { label: Template, name: template, widget: hidden, default: page }
+          - { label: Title, name: title, widget: string }
+          - { label: Introduction, name: introduction, widget: markdown }
+          - { label: Body, name: body, widget: markdown }
+  - name: organisations
+    label: Organisations
+    identifier_field: name
+    folder: content/organisations
+    create: true
+    fields:
+      - { label: Name, name: name, widget: string }  
+  - name: categories
+    label: Categories
+    identifier_field: name
+    folder: content/categories
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string }
